@@ -6,6 +6,14 @@ const should = require('should'),
       agent = request.agent(app);
 
 describe('Book Crud Test', function(){
+
+    it('should allow a GET of all users and return 200 Status', function(done){
+        agent.get('/api/books')
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(200, done());
+    });
+
     it('should allow a book to be posted and return req/res', function(done){
         let bookPost = {title:'new book', author: 'nick', genre: 'fiction'};
         agent.post('/api/books')
@@ -16,7 +24,10 @@ describe('Book Crud Test', function(){
                 results.body.should.have.property('_id');
                 done();
             });
+
     });
+
+
 
     afterEach(function(done){
         Book.remove().exec();

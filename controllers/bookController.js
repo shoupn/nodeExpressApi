@@ -9,7 +9,10 @@ const bookController = function(Book){
         else{        
             book.save();
             res.status(201);
-            res.send(book);
+            let newBook = book.toJSON();
+            newBook.links = {};
+            newBook.links.self = 'http://' + req.headers.host + '/api/books/' + newBook._id;
+            res.send(newBook);
         }
     };
 
@@ -24,8 +27,7 @@ const bookController = function(Book){
             books.forEach(function(element, index, array){
                 let newBook = element.toJSON();
                 newBook.links = {};
-                newBook.links.self = 'http://' + req.headers.host + 
-                    '/api/books/' + newBook._id;
+                newBook.links.self = 'http://' + req.headers.host + '/api/books/' + newBook._id;
                 returnBooks.push(newBook);
             });
 
